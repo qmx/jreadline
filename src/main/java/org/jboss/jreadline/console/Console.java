@@ -52,7 +52,7 @@ import java.util.logging.Logger;
  * A console reader.
  * Supports ansi terminals
  *
- * @author Ståle W. Pedersen <stale.pedersen@jboss.org>
+ * @author StÃ¥le W. Pedersen <stale.pedersen@jboss.org>
  */
 public class Console {
 
@@ -354,7 +354,8 @@ public class Console {
                 result = parseOperation(operation, mask);
 
             if(result != null) {
-                operations = ControlOperatorParser.findAllControlOperators(result);
+                operations = ControlOperatorParser.findAllControlOperators(result,
+                        settings.isOperationsEnabled());
                 ConsoleOutput output = parseOperations();
                 output = processInternalCommands(output);
                 if(output.getBuffer() != null) {

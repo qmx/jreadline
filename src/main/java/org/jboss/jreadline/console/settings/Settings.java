@@ -51,6 +51,7 @@ public class Settings {
     private KeyOperationManager operationManager = new KeyOperationManager();
     private File aliasFile;
     private boolean aliasEnabled = true;
+    private boolean operationsEnabled = true;
 
     private static final Settings INSTANCE = new Settings();
 
@@ -80,6 +81,7 @@ public class Settings {
         setQuitHandler(null);
         operationManager.clear();
         setAliasEnabled(true);
+        setOperationsEnabled(true);
     }
 
     /**
@@ -497,6 +499,14 @@ public class Settings {
 
     public void setAliasEnabled(boolean enabled) {
         aliasEnabled = enabled;
+    }
+    
+    public boolean isOperationsEnabled() {
+        return operationsEnabled;
+    }
+
+    public void setOperationsEnabled(boolean operationsEnabled) {
+        this.operationsEnabled = operationsEnabled;
     }
 
     public void setQuitHandler(QuitHandler qh) {

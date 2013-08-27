@@ -7,6 +7,7 @@
 package org.jboss.jreadline.console.operator;
 
 import org.jboss.jreadline.console.ConsoleOperation;
+import org.jboss.jreadline.console.operator.ControlOperator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,88 +82,84 @@ public class ControlOperatorParser {
         }
         return end;
     }
-
+    
     /**
-     * Parse buffer and find all RedirectionOperations
+     * Parse buffer checking redirection operations
      *
-     * @param buffer text
+     * @param buffer
+     *            text
      * @return all RedirectionOperations
      */
-    public static List<ConsoleOperation> findAllControlOperators(String buffer) {
-        Matcher matcher = controlOperatorPattern.matcher(buffer);
+     public static List<ConsoleOperation> findAllControlOperators(String buffer) {
+         return findAllControlOperators(buffer, true);
+     }
+
+    /**
+     * Parse buffer
+     *
+     * @param buffer
+     *            text
+     * @param checkOperations if true check and find operations otherwise skip this step
+     * @return all RedirectionOperations
+     */
+    public static List<ConsoleOperation> findAllControlOperators(String buffer, boolean checkOperations) {
         List<ConsoleOperation> reOpList = new ArrayList<ConsoleOperation>();
 
-        while(matcher.find()) {
-            if(matcher.group(1) != null) {
-                reOpList.add( new ConsoleOperation(ControlOperator.OVERWRITE_OUT_AND_ERR,
-                        buffer.substring(0, matcher.start(1))));
-                buffer = buffer.substring(matcher.end(1));
-                matcher = controlOperatorPattern.matcher(buffer);
-            }
-            else if(matcher.group(2) != null) {
-                reOpList.add( new ConsoleOperation(ControlOperator.APPEND_ERR,
-                        buffer.substring(0, matcher.start(2))));
-                buffer = buffer.substring(matcher.end(2));
-                matcher = controlOperatorPattern.matcher(buffer);
-            }
-            else if(matcher.group(3) != null) {
-                reOpList.add( new ConsoleOperation(ControlOperator.OVERWRITE_ERR,
-                        buffer.substring(0, matcher.start(3))));
-                buffer = buffer.substring(matcher.end(3));
-                matcher = controlOperatorPattern.matcher(buffer);
-            }
-            else if(matcher.group(4) != null) {
-                reOpList.add( new ConsoleOperation(ControlOperator.APPEND_OUT,
-                        buffer.substring(0, matcher.start(4))));
-                buffer = buffer.substring(matcher.end(4));
-                matcher = controlOperatorPattern.matcher(buffer);
-            }
-            else if(matcher.group(5) != null) {
-                reOpList.add( new ConsoleOperation(ControlOperator.OVERWRITE_OUT,
-                        buffer.substring(0, matcher.start(5))));
-                buffer = buffer.substring(matcher.end(5));
-                matcher = controlOperatorPattern.matcher(buffer);
-            }
-            else if(matcher.group(6) != null) {
-                reOpList.add( new ConsoleOperation(ControlOperator.OVERWRITE_IN,
-                        buffer.substring(0, matcher.start(6))));
-                buffer = buffer.substring(matcher.end(6));
-                matcher = controlOperatorPattern.matcher(buffer);
-            }
-            else if(matcher.group(7) != null) {
-                reOpList.add( new ConsoleOperation(ControlOperator.PIPE_OUT_AND_ERR,
-                        buffer.substring(0, matcher.start(7))));
-                buffer = buffer.substring(matcher.end(7));
-                matcher = controlOperatorPattern.matcher(buffer);
-            }
-            else if(matcher.group(8) != null) {
-                reOpList.add( new ConsoleOperation(ControlOperator.PIPE,
-                        buffer.substring(0, matcher.start(8))));
-                buffer = buffer.substring(matcher.end(8));
-                matcher = controlOperatorPattern.matcher(buffer);
-            }
-            else if(matcher.group(9) != null) {
-                reOpList.add( new ConsoleOperation(ControlOperator.END,
-                        buffer.substring(0, matcher.start(9))));
-                buffer = buffer.substring(matcher.end(9));
-                matcher = controlOperatorPattern.matcher(buffer);
-            }
-            else if(matcher.group(10) != null) {
-                reOpList.add( new ConsoleOperation(ControlOperator.AND,
-                        buffer.substring(0, matcher.start(10))));
-                buffer = buffer.substring(matcher.end(10));
-                matcher = controlOperatorPattern.matcher(buffer);
-            }
-            else if(matcher.group(11) != null) {
-                reOpList.add( new ConsoleOperation(ControlOperator.AMP,
-                        buffer.substring(0, matcher.start(11))));
-                buffer = buffer.substring(matcher.end(11));
-                matcher = controlOperatorPattern.matcher(buffer);
+        if (checkOperations) {
+            Matcher matcher = controlOperatorPattern.matcher(buffer);
+            while (matcher.find()) {
+                if (matcher.group(1) != null) {
+                    reOpList.add(new ConsoleOperation(ControlOperator.OVERWRITE_OUT_AND_ERR, buffer.substring(0,
+                            matcher.start(1))));
+                    buffer = buffer.substring(matcher.end(1));
+                    matcher = controlOperatorPattern.matcher(buffer);
+                } else if (matcher.group(2) != null) {
+                    reOpList.add(new ConsoleOperation(ControlOperator.APPEND_ERR, buffer.substring(0, matcher.start(2))));
+                    buffer = buffer.substring(matcher.end(2));
+                    matcher = controlOperatorPattern.matcher(buffer);
+                } else if (matcher.group(3) != null) {
+                    reOpList.add(new ConsoleOperation(ControlOperator.OVERWRITE_ERR, buffer.substring(0, matcher.start(3))));
+                    buffer = buffer.substring(matcher.end(3));
+                    matcher = controlOperatorPattern.matcher(buffer);
+                } else if (matcher.group(4) != null) {
+                    reOpList.add(new ConsoleOperation(ControlOperator.APPEND_OUT, buffer.substring(0, matcher.start(4))));
+                    buffer = buffer.substring(matcher.end(4));
+                    matcher = controlOperatorPattern.matcher(buffer);
+                } else if (matcher.group(5) != null) {
+                    reOpList.add(new ConsoleOperation(ControlOperator.OVERWRITE_OUT, buffer.substring(0, matcher.start(5))));
+                    buffer = buffer.substring(matcher.end(5));
+                    matcher = controlOperatorPattern.matcher(buffer);
+                } else if (matcher.group(6) != null) {
+                    reOpList.add(new ConsoleOperation(ControlOperator.OVERWRITE_IN, buffer.substring(0, matcher.start(6))));
+                    buffer = buffer.substring(matcher.end(6));
+                    matcher = controlOperatorPattern.matcher(buffer);
+                } else if (matcher.group(7) != null) {
+                    reOpList.add(new ConsoleOperation(ControlOperator.PIPE_OUT_AND_ERR, buffer.substring(0,
+                            matcher.start(7))));
+                    buffer = buffer.substring(matcher.end(7));
+                    matcher = controlOperatorPattern.matcher(buffer);
+                } else if (matcher.group(8) != null) {
+                    reOpList.add(new ConsoleOperation(ControlOperator.PIPE, buffer.substring(0, matcher.start(8))));
+                    buffer = buffer.substring(matcher.end(8));
+                    matcher = controlOperatorPattern.matcher(buffer);
+                } else if (matcher.group(9) != null) {
+                    reOpList.add(new ConsoleOperation(ControlOperator.END, buffer.substring(0, matcher.start(9))));
+                    buffer = buffer.substring(matcher.end(9));
+                    matcher = controlOperatorPattern.matcher(buffer);
+                } else if (matcher.group(10) != null) {
+                    reOpList.add(new ConsoleOperation(ControlOperator.AND, buffer.substring(0, matcher.start(10))));
+                    buffer = buffer.substring(matcher.end(10));
+                    matcher = controlOperatorPattern.matcher(buffer);
+                } else if (matcher.group(11) != null) {
+                    reOpList.add(new ConsoleOperation(ControlOperator.AMP, buffer.substring(0, matcher.start(11))));
+                    buffer = buffer.substring(matcher.end(11));
+                    matcher = controlOperatorPattern.matcher(buffer);
+                }
             }
         }
-        if(reOpList.size() == 0)
-            reOpList.add(new ConsoleOperation( ControlOperator.NONE, buffer));
-        if(buffer.trim().length() > 0)
+        if (reOpList.size() == 0)
+            reOpList.add(new ConsoleOperation(ControlOperator.NONE, buffer));
+        if (buffer.trim().length() > 0)
             reOpList.add(new ConsoleOperation(ControlOperator.NONE, buffer));
 
         return reOpList;

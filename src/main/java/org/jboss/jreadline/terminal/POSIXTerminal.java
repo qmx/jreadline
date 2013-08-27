@@ -158,13 +158,11 @@ public class POSIXTerminal implements Terminal {
      */
     @Override
     public int getHeight() {
-        if(height < 0) {
-            try {
-                height = getTerminalProperty("rows");
-            }
-            catch (Exception e) {
-                logger.severe("Failed to fetch terminal height: "+e.getMessage());
-            }
+        try {
+            height = getTerminalProperty("rows");
+        }
+        catch (Exception e) {
+            logger.severe("Failed to fetch terminal height: "+e.getMessage());
         }
         //cant use height < 0
         if(height < 0)
@@ -178,13 +176,11 @@ public class POSIXTerminal implements Terminal {
      */
     @Override
     public int getWidth() {
-        if(width < 0) {
-            try {
-                width = getTerminalProperty("columns");
-            }
-            catch (Exception e) {
-                logger.severe("Failed to fetch terminal width: "+e.getMessage());
-            }
+        try {
+            width = getTerminalProperty("columns");
+        }
+        catch (Exception e) {
+            logger.severe("Failed to fetch terminal width: "+e.getMessage());
         }
         //cant use with < 0
         if(width < 0)

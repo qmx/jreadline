@@ -52,7 +52,7 @@ import java.util.logging.Logger;
  * A console reader.
  * Supports ansi terminals
  *
- * @author Ståle W. Pedersen <stale.pedersen@jboss.org>
+ * @author StÃ¥le W. Pedersen <stale.pedersen@jboss.org>
  */
 public class Console {
 
@@ -354,7 +354,8 @@ public class Console {
                 result = parseOperation(operation, mask);
 
             if(result != null) {
-                operations = ControlOperatorParser.findAllControlOperators(result);
+                operations = ControlOperatorParser.findAllControlOperators(result,
+                        settings.isOperationsEnabled());
                 ConsoleOutput output = parseOperations();
                 output = processInternalCommands(output);
                 if(output.getBuffer() != null) {
@@ -865,7 +866,7 @@ public class Console {
                 for(int i=0; i<currentRow; i++)
                     terminal.writeToStdOut(Buffer.printAnsi("A")); //move to top
 
-            terminal.writeToStdOut(Buffer.printAnsi("0G")); //clear
+            terminal.writeToStdOut("\r"); //clear
 
             terminal.writeToStdOut(line);
             //if the current line.length < compared to previous we add spaces to the end
@@ -884,7 +885,7 @@ public class Console {
         else {
             terminal.writeToStdOut(Buffer.printAnsi("s")); //save cursor
             //move cursor to 0. - need to do this to clear the entire line
-            terminal.writeToStdOut(Buffer.printAnsi("0G"));
+            terminal.writeToStdOut("\r");
             terminal.writeToStdOut(Buffer.printAnsi("2K")); // clear line
 
             terminal.writeToStdOut(line);
